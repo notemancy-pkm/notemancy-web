@@ -15,7 +15,7 @@
 			class="flex items-center justify-center text-gray-700 hover:text-blue-500"
 			title="Log out"
 		>
-			<Icon icon="majesticons:logout" width="28" height="28" />
+			<Icon icon="solar:logout-3-bold-duotone" width="28" height="28" />
 		</a>
 	{:else}
 		<a
@@ -23,7 +23,7 @@
 			class="flex items-center justify-center rounded-full text-gray-700 hover:text-blue-500"
 			title="Log in"
 		>
-			<Icon icon="majesticons:login" width="28" height="28" />
+			<Icon icon="solar:login-3-bold-duotone" width="28" height="28" />
 		</a>
 	{/if}
 </div>

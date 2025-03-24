@@ -4,6 +4,7 @@
 	import 'carta-md/default.css'; /* Default theme */
 	import FileTree from './FileTree.svelte';
 	import ToC from './ToC.svelte';
+	import Icon from '@iconify/svelte';
 	import './tw.css';
 	import { getCartaInstance } from './getCarta';
 	import 'katex/dist/katex.css';
@@ -11,6 +12,7 @@
 	import { anchor } from '@cartamd/plugin-anchor';
 	import { onMount, onDestroy } from 'svelte';
 	import { page } from '$app/stores';
+	import Search from './Search.svelte';
 
 	// The data property is populated by the load function in +page.server.ts
 	let { data } = $props();
@@ -160,10 +162,34 @@
 
 		return `${day}${getOrdinalSuffix(day)} ${month} ${year}`;
 	}
+
+	// Add this line to create a reference to the Search component
+	let searchComponent: { openSearchDialog: () => void } = null;
+
+	// Replace your triggerSearch function with this:
+	function triggerSearch() {
+		console.log('Triggering search...');
+		if (searchComponent) {
+			searchComponent.openSearchDialog();
+		} else {
+			console.error('Search component not found');
+		}
+	}
 </script>
 
 <main>
 	<article>
+		<div class="fixed top-20 right-100">
+			<Search bind:this={searchComponent} />
+
+			<button
+				class="fixed z-10 rounded-full bg-blue-500 p-3 text-white shadow-lg hover:bg-blue-600 focus:outline-none"
+				aria-label="Search notes"
+				onclick={triggerSearch}
+			>
+				<Icon icon="mdi:magnify" width="24" height="24" />
+			</button>
+		</div>
 		<div
 			class="prose prose-base prose-headings:font-[Noto_Sans] mx-auto max-w-[784px] pb-16 font-[IBM_Plex_Serif] text-gray-700"
 		>
@@ -205,7 +231,7 @@
 						</div>
 					{/if}
 
-					<div class="mx-auto h-[70vh] w-full overflow-hidden">
+					<div class="mx-auto h-full w-full overflow-hidden">
 						<MarkdownEditor
 							{carta}
 							bind:value={editableContent}
