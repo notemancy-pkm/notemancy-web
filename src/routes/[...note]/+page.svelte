@@ -80,11 +80,8 @@
 
 <main>
 	<article>
-		<div class="fixed top-0 left-0 m-6 w-[50px] p-0">
-			<img src="/logo.svg" alt="Logo" class="logo" />
-		</div>
 		<div
-			class="prose prose-base prose-headings:font-[Noto_Sans] mx-auto max-w-[784px] font-[IBM_Plex_Serif] text-gray-700"
+			class="prose prose-base prose-headings:font-[Noto_Sans] mx-auto max-w-[784px] pb-16 font-[IBM_Plex_Serif] text-gray-700"
 		>
 			{#key value}
 				<div class="content" id="content">
@@ -114,7 +111,7 @@
 		<div class="fixed top-[5svh] left-0 font-[Noto_Sans] text-base">
 			<FileTree />
 		</div>
-		<div class="fixed top-0 right-0 flex w-[300px] justify-end p-2 text-xs">
+		<div class="fixed top-[5svh] right-0 flex w-[300px] justify-end p-2 text-xs">
 			<ToC noteKey={value} />
 		</div>
 	</article>

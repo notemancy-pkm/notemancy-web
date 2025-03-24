@@ -32,7 +32,7 @@
 		<p>Error loading file tree: {error}</p>
 	</div>
 {:else if tree}
-	<nav class="h-[95svh] w-[300px] overflow-y-auto p-4">
+	<nav class="h-[90svh] w-[300px] overflow-y-auto p-4">
 		<ul class="m-0 list-none">
 			{#each tree as node}
 				<TreeItem {node} />

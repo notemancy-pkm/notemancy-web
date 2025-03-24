@@ -132,7 +132,7 @@
 	$: currentIndex = sortedHeadings.findIndex((h) => h.id === $currentId);
 </script>
 
-<nav class="relative h-screen w-full">
+<nav class="relative h-[93svh] w-full">
 	<!-- Render gray vertical line segments with gaps -->
 	{#each segments as seg}
 		<div
