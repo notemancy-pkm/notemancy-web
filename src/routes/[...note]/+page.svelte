@@ -5,7 +5,6 @@
 	import FileTree from './FileTree.svelte';
 	import ToC from './ToC.svelte';
 	import './tw.css';
-
 	import { getCartaInstance } from './getCarta';
 	import 'katex/dist/katex.css';
 	import { math } from '@cartamd/plugin-math';
@@ -35,39 +34,9 @@
 		editableContent = data.note.content;
 	});
 
-	// Function to toggle edit mode
-	function toggleEditMode() {
-		// Only allow toggling if user is logged in
-		if (!data.simpleUser) {
-			return;
-		}
-
-		if (isEditMode) {
-			// Exiting edit mode - ask for confirmation if content was changed
-			if (editableContent !== value && !confirm('Discard your changes?')) {
-				return;
-			}
-			editableContent = value; // Reset to original content
-		} else {
-			// Entering edit mode
-			editableContent = value;
-		}
-
-		isEditMode = !isEditMode;
-	}
-
-	// Handle keyboard shortcut
-	function handleKeyDown(event: KeyboardEvent) {
-		// Check for Ctrl+L (or Cmd+L on Mac)
-		if ((event.ctrlKey || event.metaKey) && event.key === 'l') {
-			event.preventDefault(); // Prevent browser's "focus address bar" action
-			toggleEditMode();
-		}
-	}
-
-	// Save changes function
+	// Automatically save changes when exiting edit mode
 	async function saveChanges() {
-		if (!data.simpleUser || !isEditMode) return;
+		if (!data.simpleUser) return;
 
 		isSaving = true;
 		saveError = null;
@@ -94,9 +63,8 @@
 			value = editableContent;
 			saveSuccess = true;
 
-			// After a short delay, exit edit mode
+			// After a short delay, hide the success message
 			setTimeout(() => {
-				isEditMode = false;
 				saveSuccess = false;
 			}, 1500);
 		} catch (error) {
@@ -104,6 +72,40 @@
 			console.error('Error saving note:', error);
 		} finally {
 			isSaving = false;
+		}
+	}
+
+	// Function to toggle edit mode
+	function toggleEditMode() {
+		// Only allow toggling if user is logged in
+		if (!data.simpleUser) {
+			return;
+		}
+
+		if (isEditMode) {
+			// Exiting edit mode
+			if (editableContent !== value) {
+				// Content has changed, save it
+				saveChanges().then(() => {
+					isEditMode = false;
+				});
+			} else {
+				// No changes, just toggle the mode
+				isEditMode = false;
+			}
+		} else {
+			// Entering edit mode
+			editableContent = value;
+			isEditMode = true;
+		}
+	}
+
+	// Handle keyboard shortcut
+	function handleKeyDown(event: KeyboardEvent) {
+		// Check for Ctrl+L (or Cmd+L on Mac)
+		if ((event.ctrlKey || event.metaKey) && event.key === 'l') {
+			event.preventDefault(); // Prevent browser's "focus address bar" action
+			toggleEditMode();
 		}
 	}
 
@@ -167,24 +169,26 @@
 		>
 			{#if isEditMode}
 				<div class="mt-20 mb-4">
-					<div class="mb-4 flex items-center justify-between">
-						<h1 class="mb-0 font-[Noto_Sans] font-semibold">{data.note.title}</h1>
-						<div class="flex gap-2">
-							<button
-								on:click={saveChanges}
-								disabled={isSaving}
-								class="rounded-md bg-blue-500 px-4 py-2 font-[Noto_Sans] text-sm text-white hover:bg-blue-600 disabled:bg-blue-300"
-							>
-								{isSaving ? 'Saving...' : 'Save'}
-							</button>
-							<button
-								on:click={toggleEditMode}
-								class="rounded-md bg-gray-200 px-4 py-2 font-[Noto_Sans] text-sm text-gray-700 hover:bg-gray-300"
-							>
-								Cancel
-							</button>
+					<div class="mb-4">
+						<h1 class="mb-4 font-[Noto_Sans] font-semibold">{data.note.title}</h1>
+						<div
+							class="flex items-center justify-start gap-8 font-[Noto_Sans] text-sm text-gray-400"
+						>
+							<div class="flex items-center gap-1 text-gray-700">
+								by <div class="font-semibold">Rishikanth</div>
+							</div>
+							<div class="">{formatDate(data.note.frontmatter.last_modified)}</div>
+							{#if data.note.frontmatter && data.note.frontmatter.tags}
+								<div class="flex items-center gap-2">
+									{#each data.note.frontmatter.tags as tag}
+										<div class="">#{tag}</div>
+									{/each}
+								</div>
+							{/if}
 						</div>
+						<hr class="border-[#ff7eb6]" />
 					</div>
+
 					{#if saveSuccess}
 						<div class="mb-4 rounded-md bg-green-100 p-2 font-[Noto_Sans] text-sm text-green-800">
 							Note saved successfully!
@@ -195,21 +199,28 @@
 							Error: {saveError}
 						</div>
 					{/if}
-					<div class="mb-2 font-[Noto_Sans] text-sm text-gray-400">
-						Editing as {data.simpleUser} • Press Ctrl+L to toggle edit mode
-					</div>
-					<div class="h-[70vh] w-[700px] overflow-hidden rounded-md border border-gray-300">
-						<MarkdownEditor {carta} bind:value={editableContent} disableToolbar={true} theme="tw" />
+					{#if isSaving}
+						<div class="mb-4 rounded-md bg-blue-50 p-2 font-[Noto_Sans] text-sm text-blue-800">
+							Saving changes...
+						</div>
+					{/if}
+
+					<div class="mx-auto h-[70vh] w-full overflow-hidden">
+						<MarkdownEditor
+							{carta}
+							bind:value={editableContent}
+							disableToolbar={true}
+							scroll={'sync'}
+							theme="tw"
+							mode={'tabs'}
+						/>
 					</div>
 				</div>
 			{:else}
 				<div class="content" id="content">
 					<div class="mt-20 mb-20">
-						<div class="flex items-center justify-between">
+						<div>
 							<h1 class="mb-4 font-[Noto_Sans] font-semibold">{data.note.title}</h1>
-							{#if data.simpleUser}
-								<div class="font-[Noto_Sans] text-sm text-gray-500">Press Ctrl+L to edit</div>
-							{/if}
 						</div>
 						<div
 							class="flex items-center justify-start gap-8 font-[Noto_Sans] text-sm text-gray-400"
