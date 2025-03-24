@@ -136,7 +136,7 @@
 	<!-- Render gray vertical line segments with gaps -->
 	{#each segments as seg}
 		<div
-			class="absolute right-2 w-px bg-gray-300"
+			class="absolute right-2 w-0.5 bg-gray-100"
 			style="top: {seg.top}%; height: {seg.height}%"
 		></div>
 	{/each}
@@ -192,7 +192,7 @@
 		</a>
 		<span
 			class={`absolute rounded-full ${$currentId === heading.id ? 'bg-blue-500' : 'bg-gray-300'}`}
-			style="height: 0.2rem; width: 0.2rem; top: {heading.pos}%; right: 7px; transform: translateY(-50%);"
+			style="height: 0.2rem; width: 0.2rem; top: {heading.pos}%; right: 7.5px; transform: translateY(-50%);"
 		></span>
 	{/each}
 </nav>

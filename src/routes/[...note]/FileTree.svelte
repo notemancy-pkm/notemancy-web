@@ -32,7 +32,7 @@
 		<p>Error loading file tree: {error}</p>
 	</div>
 {:else if tree}
-	<nav class="h-[90svh] w-[300px] overflow-y-auto p-4">
+	<nav class="custom-scrollbar mt-0 h-[95svh] w-[300px] overflow-y-auto p-4 pt-0">
 		<ul class="m-0 list-none">
 			{#each tree as node}
 				<TreeItem {node} />
@@ -44,3 +44,43 @@
 		<p>Loading file tree...</p>
 	</div>
 {/if}
+
+<style>
+	/* Custom scrollbar styling */
+	.custom-scrollbar {
+		/* Move scrollbar to the left instead of right */
+		direction: rtl;
+	}
+
+	.custom-scrollbar > * {
+		/* Fix the text direction back to normal */
+		direction: ltr;
+	}
+
+	/* Width of the scrollbar */
+	.custom-scrollbar::-webkit-scrollbar {
+		width: 1px; /* Even thinner */
+	}
+
+	/* Track - the area behind the scrollbar - make it transparent */
+	.custom-scrollbar::-webkit-scrollbar-track {
+		background-color: transparent;
+	}
+
+	/* Handle/thumb - the draggable scrolling element */
+	.custom-scrollbar::-webkit-scrollbar-thumb {
+		background-color: var(--color-gray-100, #e0e0e0);
+		border-radius: 0; /* No border radius for a clean line */
+	}
+
+	/* Handle on hover - barely visible increase in contrast */
+	.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+		background-color: var(--color-gray-200, #c6c6c6);
+	}
+
+	/* Firefox scrollbar support */
+	.custom-scrollbar {
+		scrollbar-width: thin;
+		scrollbar-color: var(--color-gray-100, #e0e0e0) transparent;
+	}
+</style>

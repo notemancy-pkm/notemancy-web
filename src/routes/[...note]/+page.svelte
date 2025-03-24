@@ -85,7 +85,7 @@
 		>
 			{#key value}
 				<div class="content" id="content">
-					<div class="mt-24 mb-20">
+					<div class="mt-20 mb-20">
 						<h1 class="mb-4 font-[Noto_Sans] font-semibold">{data.note.title}</h1>
 						<div
 							class="flex items-center justify-start gap-8 font-[Noto_Sans] text-sm text-gray-400"
@@ -111,7 +111,7 @@
 		<div class="fixed top-[5svh] left-0 font-[Noto_Sans] text-base">
 			<FileTree />
 		</div>
-		<div class="fixed top-[5svh] right-0 flex w-[300px] justify-end p-2 text-xs">
+		<div class="fixed top-[5svh] right-0 flex w-[350px] justify-end p-2 text-xs">
 			<ToC noteKey={value} />
 		</div>
 	</article>
