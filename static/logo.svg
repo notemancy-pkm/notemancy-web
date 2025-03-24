@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="117 87 236 106" preserveAspectRatio="none">
+  <!-- Gradient definitions -->
+  <defs>
+    <linearGradient id="primary-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0e61fe" />
+      <stop offset="100%" stop-color="#A855F7" />
+    </linearGradient>
+    
+    <linearGradient id="secondary-gradient" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#EC4899" />
+      <stop offset="100%" stop-color="#F43F5E" />
+    </linearGradient>
+    
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.1" />
+    </filter>
+  </defs>
+  
+  <!-- Group without any transform so that the design occupies its natural bounds -->
+  <g>
+    <!-- R Letter - clean, angular design -->
+    <path d="M120 90 L120 190 M120 90 L190 90 
+             C210 90 220 110 220 125 
+             C220 140 210 160 190 160 
+             L120 160 M180 160 L220 190" 
+          stroke="url(#primary-gradient)" 
+          stroke-width="6" 
+          fill="none" 
+          stroke-linejoin="miter" 
+          stroke-linecap="square"
+          filter="url(#shadow)" />
+          
+    <!-- C Letter - sleek, minimal -->
+    <path d="M280 90 C260 90 240 110 240 140 
+             C240 170 260 190 290 190 
+             C320 190 340 170 350 150" 
+          stroke="url(#secondary-gradient)" 
+          stroke-width="6" 
+          fill="none" 
+          stroke-linejoin="miter" 
+          stroke-linecap="square"
+          filter="url(#shadow)" />
+          
+    <!-- Stylish connective element -->
+    <line x1="220" y1="125" x2="240" y2="140" stroke="#A855F7" stroke-width="3" opacity="0.7" />
+  </g>
+</svg>
