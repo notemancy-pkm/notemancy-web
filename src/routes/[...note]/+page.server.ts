@@ -1,6 +1,6 @@
 import type { PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async ({ params, fetch }) => {
+export const load: PageServerLoad = async ({ params, fetch, locals }) => {
 	// If the catch-all parameter is provided as an array, join it to form the relative path.
 	// If no note is provided, default to "errors.md".
 	const notePath = params.note
@@ -22,9 +22,13 @@ export const load: PageServerLoad = async ({ params, fetch }) => {
 				content: "Could not load note.",
 				frontmatter: {},
 			},
+			simpleUser: locals.simpleUser, // Pass auth info to client
 		};
 	}
 
 	const data = await response.json();
-	return { note: data };
+	return {
+		note: data,
+		simpleUser: locals.simpleUser, // Pass auth info to client
+	};
 };
